@@ -114,11 +114,12 @@ def plot_trajectories(true_trajs, pred_trajs, obs_length, name):
             label1 = 'Robot observed states'
             label2 = 'Robot no-observed states'
 
+        #Ploting predicted trajectories for time t till t+12
         if obs_length <= len(true_x):
-            ax1.plot(true_x[obs_length-1:len(true_x)], true_y[obs_length-1:len(true_y)], color=c2, linestyle='solid', marker='o', label=label2)
-            # ax2.plot(true_x[obs_length-1:len(true_x)], true_y[obs_length-1:len(true_y)], color=c2, linestyle='solid', marker='o', label=label2)
+            ax1.plot(pred_x[obs_length-1:len(true_x)], pred_y[obs_length-1:len(true_y)], color='g', linestyle='solid', marker='o', label=label2)
 
-        ax1.plot(true_x[0:min(obs_length, len(true_x))], true_y[0:min(obs_length,len(true_y))], color=c, linestyle='solid', marker='o', label=label1)
+        #Ploting real/observed trajectory from t till t+8
+        ax1.plot(true_x[0:min(obs_length, len(true_x))], true_y[0:min(obs_length,len(true_y))], color='b', linestyle='solid', marker='o', label=label1)
         # ax2.plot(true_x[0:min(obs_length, len(true_x))], true_y[0:min(obs_length,len(true_y))], color=c, linestyle='solid', marker='o', label=label1)
 
 
@@ -153,8 +154,8 @@ def plot_trajectories(true_trajs, pred_trajs, obs_length, name):
     # plt.xlim(min(limits_x[0],limits_x[-1])-0.12*width, max(limits_x[0],limits_x[-1])+0.12*width)
     plt.show()
     # plt.savefig('plot/'+name+'.png')
-    plt.gcf().clear()
-    plt.close()
+    #plt.gcf().clear()
+    #plt.close()
 
 
 def main():
