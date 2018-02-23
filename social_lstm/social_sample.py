@@ -142,7 +142,7 @@ def main():
         obs_grid = grid_batch[:sample_args.obs_length]
         # obs_traj is an array of shape obs_length x maxNumPeds x 3
 
-        inter_result.append((x[0],sample_args.obs_length))
+        #inter_result.append((x[0],sample_args.obs_length)) #what is this?
 
         print "********************** SAMPLING A NEW TRAJECTORY", b, "******************************"
         batch_error = 0
