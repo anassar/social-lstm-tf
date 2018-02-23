@@ -24,7 +24,7 @@ def plot_trajectories(true_trajs, pred_trajs, obs_length, name):
     obs_length : Length of observed trajectory
     name: Name of the plot
     '''
-    traj_length, maxNumPeds, _ = true_trajs.shape
+    traj_length, maxNumPeds = true_trajs.shape
 
     # Initialize figure
     # fig = plt.figure()
@@ -168,7 +168,7 @@ def main():
     for i in range(len(results)):
 
         name = 'sequence' + str(i)
-        plot_trajectories(results[i][0][0], results[i][1:-1], results[i][0][1], name)
+        plot_trajectories(results[i], results[i][1:-1], np.size(results[:][0][1]), name)
 
 
 
