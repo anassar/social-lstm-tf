@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 import pickle
 import seaborn as sns
+from numpy import linalg as LA
 
 
 def plot_trajectories(true_trajs, pred_trajs, obs_length, name):
@@ -58,7 +59,7 @@ def plot_trajectories(true_trajs, pred_trajs, obs_length, name):
 
         # For each pedestrian
         for j in range(maxNumPeds):
-            if true_pos[j, 0] == 0:
+            if LA.norm(true_pos[j]) == 0:
                 # Not a ped
                 continue
             elif pred_trajs[0][i][j][0] == 0:
@@ -66,10 +67,10 @@ def plot_trajectories(true_trajs, pred_trajs, obs_length, name):
                 continue
             else:
                 # If he is a ped
-                if true_pos[j, 1] > 1 or true_pos[j, 1] < -1:
-                    continue
-                elif true_pos[j, 2] > 1 or true_pos[j, 2] < -1:
-                    continue
+                #if true_pos[j, 1] > 1 or true_pos[j, 1] < -1:
+                #    continue
+                #elif true_pos[j, 2] > 1 or true_pos[j, 2] < -1:
+                #    continue
 
                 if (j not in traj_data) and i < obs_length:
                     traj_data[j] = []
