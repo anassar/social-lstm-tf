@@ -66,7 +66,7 @@ def plot_trajectories(true_trajs, pred_trajs, obs_length, name):
                 # Not a ped
                 continue
             else:
-                # If he is a ped
+                # if is out of the map
                 #if true_pos[j, 1] > 1 or true_pos[j, 1] < -1:
                 #    continue
                 #elif true_pos[j, 2] > 1 or true_pos[j, 2] < -1:
