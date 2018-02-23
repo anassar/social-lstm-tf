@@ -480,7 +480,7 @@ class SocialModel():
         x = np.random.multivariate_normal(mean, cov, 1)
         return x[0][0], x[0][1]
 
-    def sample(self, sess, traj, grid, dimensions, true_traj, d_batch, num=10):
+    def sample(self, sess, traj, grid, dimensions, true_traj, d_batch, n_predicted_steps=10):
         # traj is a sequence of frames (of length obs_length)
         # so traj shape is (obs_length x maxNumPeds x 3)
         # grid is a tensor of shape obs_length x maxNumPeds x maxNumPeds x (gs**2)
@@ -501,17 +501,18 @@ class SocialModel():
             [states, cost] = sess.run([self.final_states, self.cost], feed)
             # writer.add_summary(s, index)
             # print cost
-
-        ret = traj
-
+        #traj as format of n_observed_time_steps number os pedestrians and xyz coordinates
+        #ret = traj
         last_frame = traj[-1]
+        ret=np.zeros((8, self.maxNumPeds, self.size_data_state+2))
+        ret[0:8,0:self.maxNumPeds,0:3] = traj #hack to change positions to distribution parameters ux, uy, sx, sy, pvam        last_frame = traj[-1] # why does it take the last frame?
 
         prev_data = np.reshape(last_frame, (1, self.maxNumPeds, self.size_data_state))
         prev_grid_data = np.reshape(grid[-1], (1, self.maxNumPeds, self.maxNumPeds, self.grid_size * self.grid_size))
 
         prev_target_data = np.reshape(true_traj[traj.shape[0]], (1, self.maxNumPeds, self.size_data_state))
         # Prediction
-        for t in range(num):
+        for t in range(n_predicted_steps):
             # print "**** NEW PREDICTION TIME STEP", t, "****"
             feed = {self.input_data: prev_data, self.LSTM_states: states, self.grid_data: prev_grid_data,
                     self.target_data: prev_target_data, self.map_index: [d_batch]}
@@ -521,6 +522,7 @@ class SocialModel():
             # Output is a list of lists where the inner lists contain matrices of shape 1x5. The outer list contains only one element (since seq_length=1) and the inner list contains maxNumPeds elements
             # output = output[0]
             newpos = np.zeros((1, self.maxNumPeds, self.size_data_state))
+            predtraj = np.zeros((1, self.maxNumPeds, self.size_data_state + 2))
             for pedindex, pedoutput in enumerate(output):
                 [o_mux, o_muy, o_sx, o_sy, o_corr] = np.split(pedoutput[0], 5, 0)
                 mux, muy, sx, sy, corr = o_mux[0], o_muy[0], np.exp(o_sx[0]), np.exp(o_sy[0]), np.tanh(o_corr[0])
@@ -533,12 +535,15 @@ class SocialModel():
                 #     print "New Position", next_x, next_y
                 #     print "Target Position", prev_target_data[0, pedindex, 1], prev_target_data[0, pedindex, 2]
                 #     print
-
-                newpos[0, pedindex, :] = [prev_data[0, pedindex, 0], next_x, next_y]
-            ret = np.vstack((ret, newpos))
-            prev_data = newpos
+                # feedcbacking the mean_x position and mean_y
+                newpos[0, pedindex, :] = [prev_data[0, pedindex, 0], o_mux, o_muy]
+                predtraj[0, pedindex, :] =[o_mux, o_muy,sx,sy,corr]
+                # feedcbacking previous predicted position x and y
+                #newpos[0, pedindex, :] = [prev_data[0, pedindex, 0], next_x, next_y]
+            ret = np.vstack((ret, predtraj)) #it stacks predicted values with the observed
+            prev_data =  newpos
             prev_grid_data = getSequenceGridMask(prev_data, dimensions, self.neighborhood_size, self.grid_size)
-            if t != num - 1:
+            if t != n_predicted_steps - 1: # why do you do something diferelast step?nt in the
                 prev_target_data = np.reshape(true_traj[traj.shape[0] + t + 1], (1, self.maxNumPeds, self.size_data_state))
 
         # The returned ret is of shape (obs_length+pred_length) x maxNumPeds x 3
