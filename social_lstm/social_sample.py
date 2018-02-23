@@ -81,7 +81,7 @@ def main():
     sample_args = parser.parse_args()
 
     # Save directory
-    save_directory = 'save/' + str(sample_args.test_dataset) + '/'
+    save_directory = 'save/' + '012345' + '/'
 
     # Define the path for the config file for saved args
     with open(os.path.join(save_directory, 'social_config.pkl'), 'rb') as f:
