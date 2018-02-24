@@ -409,20 +409,12 @@ class SocialModel():
     def get_coef0(self, output):
         # eq 20 -> 22 of Graves (2013)
 
-        z = output
-        # Split the output into 5 parts corresponding to means, std devs and corr
-        z_mux, z_muy, z_sx, z_sy, z_alph = tf.split(z, self.output_size, 0)
-        # The output must be exponentiated for the std devs
-        z_sx_0 = tf.exp(z_sx[0])
-        z_sy_0 = tf.exp(z_sy[0])
+        z_mu, z_s, z_alph, z_rho = self.get_coef(output)
+        z_mux, z_muy = tf.split(z_mu, 2, 1)
+        z_sx, z_sy = tf.split(z_s, 2, 1)
+        index = tf.argmax(tf.squeeze(z_alph))
 
-        z_mu = tf.stack([tf.squeeze(z_mux[0]), tf.squeeze(z_muy[0])], axis=1)
-        z_s = tf.stack([tf.squeeze(z_sx_0), tf.squeeze(z_sy_0)], axis=1)
-
-        # Tanh applied to keep it in the range [-1, 1]
-        z_alp = tf.nn.softmax(z_alph)
-
-        return [z_mu, z_s, z_alp]
+        return [z_mux[index], z_muy[index], z_sx[index], z_sy[index], z_rho[index]]
 
     def getSocialTensor(self, current_frame_data, grid_frame_data, output_states, scale=1):
         '''
@@ -599,8 +591,8 @@ class SocialModel():
             # output = output[0]
             newpos = np.zeros((1, self.maxNumPeds, self.size_data_state))
             for pedindex, pedoutput in enumerate(output):
-                mu, s, alph = self.get_coef0(pedoutput[0])
-                next_x, next_y = self.sample_biv_gaussian(mu, s, alph)
+                mux, muy, sx, sy, rho = self.get_coef0(pedoutput)
+                next_x, next_y = self.sample_gaussian_2d(mux, muy, sx, sy, rho)
 
                 # if prev_data[0, pedindex, 0] != 0:
                 #     print "Pedestrian ID", prev_data[0, pedindex, 0]
