@@ -72,6 +72,9 @@ def main():
     parser.add_argument('--test_dataset', type=int, default=3,
                         help='Dataset to be tested on')
 
+    parser.add_argument('--test_dataset_directory', type=str, default='012345',
+                        help='Dataset to be tested on')
+
     # Model to be loaded
     parser.add_argument('--epoch', type=int, default=0,
                         help='Epoch of model to be loaded')
@@ -81,7 +84,7 @@ def main():
     sample_args = parser.parse_args()
 
     # Save directory
-    save_directory = 'save/' + str(sample_args.test_dataset) + '/'
+    save_directory = 'save/' + sample_args.test_dataset_directory + '/'
 
     # Define the path for the config file for saved args
     with open(os.path.join(save_directory, 'social_config.pkl'), 'rb') as f:
