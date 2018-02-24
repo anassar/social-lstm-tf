@@ -150,7 +150,7 @@ def main():
         print "********************** SAMPLING A NEW TRAJECTORY", b, "******************************"
         batch_error = 0
         for i in range(10):
-            complete_traj = model.sample(sess, obs_traj, obs_grid, dimensions, x_batch, sample_args.pred_length)
+            complete_traj = model.sample(sess, obs_traj, obs_grid, dimensions, x_batch,d_batch, sample_args.pred_length)
             inter_result.append((complete_traj))
             batch_error += get_mean_error(complete_traj, x[0], sample_args.obs_length, saved_args.maxNumPeds)
 
