@@ -536,7 +536,7 @@ class SocialModel():
                 #     print "Target Position", prev_target_data[0, pedindex, 1], prev_target_data[0, pedindex, 2]
                 #     print
                 # feedcbacking the mean_x position and mean_y
-                newpos[0, pedindex, :] = [prev_data[0, pedindex, 0], mux, muy]
+                newpos[0, pedindex, :] = [prev_data[0, pedindex, 0], next_x, next_y]
                 predtraj[0, pedindex, :] =[o_mux, o_muy,sx,sy,corr]
                 # feedcbacking previous predicted position x and y
                 #newpos[0, pedindex, :] = [prev_data[0, pedindex, 0], next_x, next_y]
