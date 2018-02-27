@@ -91,9 +91,9 @@ def plot_trajectories(true_trajs, pred_trajs, obs_length, name):
                                 obs_data[j].append(list(sample[i][j, 1:3]))
                     else:
                         if i >= obs_length:
-                            pred_data[j].append(list(pred_trajs[i][j, 0:2]))
+                            pred_data[j].append(list(pred_trajs[i][j][0:2]))
                         else:
-                            obs_data[j].append(list(pred_trajs[i][j, 1:3]))
+                            obs_data[j].append(list(pred_trajs[i][j][1:3]))
                         # traj_data[j][1].append(pred_pos[j, 1:3])
     true_x=np.zeros(traj_length)
     true_y=np.zeros(traj_length)
@@ -101,6 +101,7 @@ def plot_trajectories(true_trajs, pred_trajs, obs_length, name):
     pred_y=np.zeros(traj_length)
     obs_x=np.zeros(traj_length)
     obs_y=np.zeros(traj_length)
+
     for i in range(traj_length):
         x=traj_data[1][i]
         true_x[i] = (1. + traj_data[1][i][0]) * width / 2.
@@ -132,77 +133,7 @@ def plot_trajectories(true_trajs, pred_trajs, obs_length, name):
     leg1 = ax1.legend(loc='lower right', shadow=True)
     ax1.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=2, mode="expand", borderaxespad=0.)
     plt.show()
-
-    for index, j in enumerate(traj_data):
-        # c = np.random.rand(3, 1)
-        c = [1, 0, 0]
-        c2 = [1, 0.5, 0]
-        c4 = [0, 0.8, 0]
-        c3 = [0, 0.7, 0.7]
-        true_traj_ped = traj_data[j]  # List of [x,y] elements
-        pred_traj_ped = pred_data[j]
-
-        true_x = [(1.+p[0])*height/2. for p in true_traj_ped]
-        true_y = [(1.+p[1])*width/2.  for p in true_traj_ped]
-        pred_x = [(1.+p[0])*height/2. for p in pred_traj_ped]
-        pred_y = [(1.+p[1])*width/2.  for p in pred_traj_ped]
-
-        label1 = 'Pedestrian observed states'
-        label2 = 'Pedestrian no-observed states'
-
-        if index == 0:
-            c2= c4
-            c = c3
-            limits_x = [(1. + p[0]) * height / 2. for p in obs_data[j]]
-            limits_y = [(1. + p[1]) * width / 2. for p in obs_data[j]]
-            obs_samples_lem = len(limits_x)
-            limits_x.extend(pred_x)
-            limits_y.extend(pred_y)
-            label1 = 'Robot observed states'
-            label2 = 'Robot no-observed states'
-
-        #Ploting predicted trajectories for time t till t+12
-        if obs_length <= len(true_x):
-            ax1.plot(pred_x[obs_length-1:len(true_x)], pred_y[obs_length-1:len(true_y)], color='g', linestyle='solid', marker='o', label=label2)
-
-        #Ploting real/observed trajectory from t till t+8
-        ax1.plot(true_x[0:min(obs_length, len(true_x))], true_y[0:min(obs_length,len(true_y))], color='b', linestyle='solid', marker='o', label=label1)
-        # ax2.plot(true_x[0:min(obs_length, len(true_x))], true_y[0:min(obs_length,len(true_y))], color=c, linestyle='solid', marker='o', label=label1)
-
-
-        # plt.plot(pred_x, pred_y, color=c2, linestyle='dashed', marker='x')
-        if index > 0:
-            ped_x.extend(pred_x)
-            ped_y.extend(pred_y)
-            # plt.hist2d(pred_x, pred_y, bins=40, norm=LogNorm())
-
-    sns.kdeplot(ped_x, ped_y, shade=True, ax=ax1, shade_lowest=False, cmap="Blues")
-    sns.kdeplot(limits_x[obs_samples_lem:len(limits_x)], limits_y[obs_samples_lem:len(limits_x)], shade=True, ax=ax1, shade_lowest=False)
-    ax1.imshow(im)
-    # ax2.imshow(im)
-
-    low_x_lim = min(limits_x[0],limits_x[-1])-0.12*width
-    high_x_lim = max(limits_x[0],limits_x[-1])+0.12*width
-    low_y_lim = min(limits_y[0],limits_y[-1])-0.12*height
-    high_y_lim = max(limits_y[0],limits_y[-1])+0.12*height
-
-    leg1 = ax1.legend(loc='lower right', shadow=True)
-    ax1.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=2, mode="expand", borderaxespad=0.)
-    # leg2 = ax2.legend(loc='lower right', shadow=True)
-
-    # leg1 = ax1.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    # leg2 = ax2.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-
-    ax1.set_xlim(low_x_lim, high_x_lim)
-    ax1.set_ylim(low_y_lim, high_y_lim)
-    # ax2.set_xlim(low_x_lim, high_x_lim)
-    # ax2.set_ylim(low_y_lim, high_y_lim)
-    # plt.ylim(round(min(limits_y[0],limits_y[-1])-0.12*height), round(max(limits_y[0],limits_y[-1])+0.12*height))
-    # plt.xlim(min(limits_x[0],limits_x[-1])-0.12*width, max(limits_x[0],limits_x[-1])+0.12*width)
-    plt.show()
-    # plt.savefig('plot/'+name+'.png')
-    #plt.gcf().clear()
-    #plt.close()
+    plt.close()
 
 
 def main():
