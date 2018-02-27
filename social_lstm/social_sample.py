@@ -69,7 +69,7 @@ def main():
     parser.add_argument('--pred_length', type=int, default=12,
                         help='Predicted length of the trajectory')
     # Test dataset
-    parser.add_argument('--test_dataset', type=int, default=3,
+    parser.add_argument('--test_dataset', type=int, default=4,
                         help='Dataset to be tested on')
 
     # Model to be loaded
@@ -83,7 +83,7 @@ def main():
     sample_args = parser.parse_args()
 
     # Save directory
-    save_directory = 'save/' + str(sample_args.test_dataset) + '/'
+    save_directory = 'save/' + '012345' + '/'
 
     # Define the path for the config file for saved args
     with open(os.path.join(save_directory, 'social_config.pkl'), 'rb') as f:
@@ -156,7 +156,7 @@ def main():
         print "********************** SAMPLING A NEW TRAJECTORY", b, "******************************"
         batch_error = 0
         for i in range(10):
-            complete_traj = model.sample(sess, obs_traj, obs_grid, dimensions, x_batch, sample_args.pred_length, d_batch[0])
+            complete_traj = model.sample(sess, obs_traj, obs_grid, dimensions, x_batch, d_batch,sample_args.pred_length)
             inter_result.append((complete_traj))
             batch_error += get_mean_error(complete_traj, x[0], sample_args.obs_length, saved_args.maxNumPeds)
 

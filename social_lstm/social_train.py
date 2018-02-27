@@ -30,7 +30,7 @@ def main():
     parser.add_argument('--seq_length', type=int, default=12,
                         help='RNN sequence length')
     # Number of epochs parameter
-    parser.add_argument('--num_epochs', type=int, default=50,
+    parser.add_argument('--num_epochs', type=int, default=101,
                         help='number of epochs')
     # Frequency at which the model should be saved parameter
     parser.add_argument('--save_every', type=int, default=10,
@@ -56,7 +56,7 @@ def main():
     parser.add_argument('--neighborhood_size', type=int, default=12,
                         help='Neighborhood size to be considered for social grid')
     # Size of the social grid parameter
-    parser.add_argument('--grid_size', type=int, default=4,
+    parser.add_argument('--grid_size', type=int, default=8,
                         help='Grid size of the social grid')
     # Maximum number of pedestrians to be considered
     parser.add_argument('--maxNumPeds', type=int, default=40,

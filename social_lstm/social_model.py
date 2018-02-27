@@ -496,7 +496,7 @@ class SocialModel():
                                    (1, self.maxNumPeds, self.maxNumPeds, self.grid_size * self.grid_size))
 
             feed = {self.input_data: data, self.LSTM_states: states, self.grid_data: grid_data,
-                    self.target_data: target_data, self.map_index: d_batch}
+                    self.target_data: target_data, self.map_index: [d_batch]}
 
             [states, cost] = sess.run([self.final_states, self.cost], feed)
             # writer.add_summary(s, index)

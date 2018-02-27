@@ -160,7 +160,7 @@ def main():
     '''
     Main function
     '''
-    f = open('save/social_results.pkl', 'rb')
+    f = open('save/012345/social_results.pkl', 'rb')
     results = pickle.load(f)
 
     for i in range(len(results)):
