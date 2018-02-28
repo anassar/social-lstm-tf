@@ -534,7 +534,7 @@ class SocialModel():
                 #     print "Target Position", prev_target_data[0, pedindex, 1], prev_target_data[0, pedindex, 2]
                 #     print
 
-                newpos[0, pedindex, :] = [prev_data[0, pedindex, 0], next_x, next_y]
+                newpos[0, pedindex, :] = [prev_data[0, pedindex, 0], mux, muy]
             ret = np.vstack((ret, newpos))
             prev_data = newpos
             prev_grid_data = getSequenceGridMask(prev_data, dimensions, self.neighborhood_size, self.grid_size)
