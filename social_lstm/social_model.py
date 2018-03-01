@@ -502,9 +502,12 @@ class SocialModel():
             # writer.add_summary(s, index)
             # print cost
 
-        ret = traj
-
+        ret = np.zeros((8, self.maxNumPeds, self.size_data_state+3))
+        ret[:,:,0:self.size_data_state] = traj
         last_frame = traj[-1]
+
+        prev_data2 =  np.zeros((8, self.maxNumPeds, self.size_data_state+3))
+        prev_data2[:,:, 0:self.size_data_state] = last_frame
 
         prev_data = np.reshape(last_frame, (1, self.maxNumPeds, self.size_data_state))
         prev_grid_data = np.reshape(grid[-1], (1, self.maxNumPeds, self.maxNumPeds, self.grid_size * self.grid_size))
@@ -521,6 +524,7 @@ class SocialModel():
             # Output is a list of lists where the inner lists contain matrices of shape 1x5. The outer list contains only one element (since seq_length=1) and the inner list contains maxNumPeds elements
             # output = output[0]
             newpos = np.zeros((1, self.maxNumPeds, self.size_data_state))
+            new_distribution = np.zeros((1, self.maxNumPeds, self.size_data_state+3))
             for pedindex, pedoutput in enumerate(output):
                 [o_mux, o_muy, o_sx, o_sy, o_corr] = np.split(pedoutput[0], 5, 0)
                 mux, muy, sx, sy, corr = o_mux[0], o_muy[0], np.exp(o_sx[0]), np.exp(o_sy[0]), np.tanh(o_corr[0])
@@ -533,9 +537,9 @@ class SocialModel():
                 #     print "New Position", next_x, next_y
                 #     print "Target Position", prev_target_data[0, pedindex, 1], prev_target_data[0, pedindex, 2]
                 #     print
-
-                newpos[0, pedindex, :] = [prev_data[0, pedindex, 0], mux, muy]
-            ret = np.vstack((ret, newpos))
+                new_distribution[0, pedindex, :] = [prev_data[0, pedindex, 0], mux, muy, sx, sy, corr]
+                newpos[0, pedindex, :] = [prev_data2[0, pedindex, 0], mux, muy]
+            ret = np.vstack((ret, new_distribution))
             prev_data = newpos
             prev_grid_data = getSequenceGridMask(prev_data, dimensions, self.neighborhood_size, self.grid_size)
             if t != num - 1:
@@ -602,3 +606,4 @@ class SocialModel():
 
         # The returned ret is of shape (obs_length+pred_length) x maxNumPeds x 3
         return ret
+
