@@ -30,7 +30,7 @@ def main():
     parser.add_argument('--seq_length', type=int, default=12,
                         help='RNN sequence length')
     # Number of epochs parameter
-    parser.add_argument('--num_epochs', type=int, default=101,
+    parser.add_argument('--num_epochs', type=int, default=50,
                         help='number of epochs')
     # Frequency at which the model should be saved parameter
     parser.add_argument('--save_every', type=int, default=10,
@@ -40,7 +40,7 @@ def main():
     parser.add_argument('--grad_clip', type=float, default=10.,
                         help='clip gradients at this value')
     # Learning rate parameter
-    parser.add_argument('--learning_rate', type=float, default=0.005,
+    parser.add_argument('--learning_rate', type=float, default=0.003,
                         help='learning rate')
     # Decay rate for the learning rate parameter
     parser.add_argument('--decay_rate', type=float, default=0.95,
@@ -67,7 +67,7 @@ def main():
     parser.add_argument('-v', '--validDataset', type=int, default=2)
 
     # Lambda regularization parameter (L2)
-    parser.add_argument('--lambda_param', type=float, default=0.0005,
+    parser.add_argument('--lambda_param', type=float, default=0.0002,
                         help='L2 regularization parameter')
     # TensorBoard Writer name
     parser.add_argument('--writer', type=str, default='training',
