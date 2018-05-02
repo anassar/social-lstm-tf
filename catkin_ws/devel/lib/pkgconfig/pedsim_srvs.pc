@@ -1,8 +1,0 @@
-prefix=/home/BB/catkin_ws/devel
-
-Name: pedsim_srvs
-Description: Description of pedsim_srvs
-Version: 0.0.1
-Cflags: -I/home/BB/catkin_ws/devel/include
-Libs: -L/home/BB/catkin_ws/devel/lib 
-Requires: message_runtime pedsim_msgs std_msgs

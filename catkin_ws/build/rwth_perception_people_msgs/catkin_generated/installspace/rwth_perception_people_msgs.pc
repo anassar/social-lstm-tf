@@ -1,8 +1,0 @@
-prefix=/home/BB/catkin_ws/install
-
-Name: rwth_perception_people_msgs
-Description: Description of rwth_perception_people_msgs
-Version: 1.0.8
-Cflags: -I/home/BB/catkin_ws/install/include
-Libs: -L/home/BB/catkin_ws/install/lib 
-Requires: 
