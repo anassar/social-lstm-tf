@@ -1,0 +1,4 @@
+- git:
+    local-name: social-lstm-tf
+    uri: https://github.com/bbrito/social-lstm-tf.git
+    version: master
