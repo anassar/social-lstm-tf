@@ -1,0 +1,2 @@
+set(spencer_social_relation_msgs_MESSAGE_FILES "/home/BB/catkin_ws/src/spencer_social_relation_msgs/msg/SocialRelation.msg;/home/BB/catkin_ws/src/spencer_social_relation_msgs/msg/SocialRelations.msg;/home/BB/catkin_ws/src/spencer_social_relation_msgs/msg/SocialActivity.msg;/home/BB/catkin_ws/src/spencer_social_relation_msgs/msg/SocialActivities.msg")
+set(spencer_social_relation_msgs_SERVICE_FILES "")
